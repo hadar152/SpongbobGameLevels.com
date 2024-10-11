@@ -1,0 +1,77 @@
+body {
+    overflow: hidden;
+    background-color: rgb(233, 206, 116);
+}
+
+h1 {
+    font-family: cursive;
+}
+
+#endScore {
+    font-family: cursive;
+}
+
+#over {
+    font-family: cursive;
+    color: rgb(255, 0, 0);
+}
+
+#endDiv {
+    text-align: center;
+    margin: auto;
+}
+
+.btnOver {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: url("bubbles.png");
+    background-size: 80px;
+    height: 70px;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.bubble {
+    width: 60px;
+    /* שנה את הערך כאן */
+    height: 60px;
+    /* אם תרצה להוסיף גובה, זה כאן */
+    position: absolute;
+    user-select: none;
+    animation-name: goUp;
+    animation-duration: 19s;
+    animation-fill-mode: forwards;
+}
+
+#player {
+    position: fixed;
+    /* מאפשר למקם את השחקן בצורה קבועה על המסך */
+    left: 50%;
+    /* ממקם את השחקן במרכז לפי ציר ה-X */
+    transform: translateX(-50%);
+    /* מסנכרן את מרכז השחקן עם ה-X */
+    bottom: 23px;
+    /* ממקם את השחקן בתחתית הדף */
+    width: 159px;
+    /* רוחב השחקן */
+    height: 270px;
+    /* גובה השחקן */
+    background-image: url('petrick.webp');
+    /* תחליף כאן את ה-url לתמונה שלך */
+    background-size: cover;
+    /* מתאימה את התמונה לגובה ורוחב השחקן */
+}
+
+@keyframes goUp {
+    0% {
+        transform: translateY(-600px);
+    }
+    100% {
+        transform: translateY(1500px);
+    }
+}

@@ -1,0 +1,179 @@
+html,
+body {
+    height: 50%;
+    margin: 0;
+}
+
+body {
+    overflow: hidden;
+    background: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b297e143-e206-4a8f-8b5c-59dbc26a99d5/ddtdlgv-48ac2b91-bab5-41fe-a2ca-7b80cc57c92d.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2IyOTdlMTQzLWUyMDYtNGE4Zi04YjVjLTU5ZGJjMjZhOTlkNVwvZGR0ZGxndi00OGFjMmI5MS1iYWI1LTQxZmUtYTJjYS03YjgwY2M1N2M5MmQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.mrMOlioaOnl4YVoeaOz9lzHDZFxzZxF_oBI6Eu4_rLs");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* תזוזת הרקע */
+}
+
+#Main {
+    margin-left: 40px;
+    font-family: cursive;
+}
+
+.btnOver {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: url("bubbles.png");
+    background-size: 100px;
+    height: 80px;
+    font-size: 26px;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#player {
+    position: absolute;
+    left: 334px;
+    bottom: 66px;
+    user-select: none;
+}
+
+#enemy {
+    position: absolute;
+    right: 0;
+    bottom: 66px;
+    animation-name: drive;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    user-select: none;
+}
+
+#Pass {
+    text-align: center;
+    font-size: 50px;
+    font-family: cursive;
+}
+
+#BestTXTR {
+    font-size: 26px;
+    font-family: cursive;
+    padding-left: 3px;
+    color: rgb(0, 0, 0);
+}
+
+#LableBest {
+    font-size: 30px;
+    font-family: cursive;
+    color: rgb(0, 0, 0);
+}
+
+#LableScore {
+    font-size: 30px;
+    font-family: cursive;
+    color: rgb(0, 0, 0);
+}
+
+#score {
+    font-size: 26px;
+    font-family: cursive;
+    padding-left: 3px;
+    color: rgb(0, 0, 0);
+}
+
+#LableTime {
+    font-size: 30px;
+    font-family: cursive;
+    color: rgb(0, 0, 0);
+}
+
+#time {
+    font-size: 26px;
+    font-family: cursive;
+    padding-left: 3px;
+    color: rgb(0, 0, 0);
+}
+
+.jump {
+    animation-name: jump;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+#scoreIMG {
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    bottom: 76px;
+    animation-name: drive;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+#overId {
+    font-size: 100px;
+    font-family: cursive;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+#result {
+    font-size: 70px;
+    font-family: cursive;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+#best {
+    font-size: 60px;
+    font-family: cursive;
+    text-align: center;
+    color: rgb(0, 0, 0);
+}
+
+@keyframes drive {
+    0% {
+        right: 0;
+        transform: translateX(100%);
+    }
+    100% {
+        right: 100%;
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes move {
+    from {
+        background-position: 0;
+    }
+    to {
+        background-position: 100%;
+    }
+}
+
+@keyframes jump {
+    0% {
+        bottom: 66;
+        /* מצב התחלתי */
+    }
+    50% {
+        bottom: 460px;
+        /* קפיצה למעלה */
+    }
+    100% {
+        bottom: 66;
+        /* חזרה למצב התחלתי */
+    }
+}
+
+@keyframes run {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-10px);
+    }
+}

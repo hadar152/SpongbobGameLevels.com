@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petrick game level4</title>
+    <link rel="stylesheet" href="level4.css">
+</head>
+
+<body>
+    <h1>Time:<b id="time">0</b></h1>
+    <div id="player"></div>
+    <div id="container"></div>
+    <script>
+        let container = document.getElementById('container');
+        let timeElement = document.getElementById('time');
+        let timeLeft = 60;
+        let player = document.getElementById('player');
+        let bubbles = [];
+        let positionX = 100;
+        let TimeInterval = setInterval(timer, 300);
+
+        function timer() {
+            timeLeft--;
+            timeElement.innerHTML = "" + timeLeft;
+            if (timeLeft === 0) {
+                endGame();
+            }
+        }
+
+        function showBubble() {
+            const bubble = document.createElement('img');
+            bubble.className = 'bubble';
+            bubble.src = 'krabby patty.webp';
+            bubble.style.left = `${getRandom(0, 95)}%`;
+            bubble.style.top = `${getRandom(0, 95)}%`;
+            container.appendChild(bubble);
+            bubbles.push(bubble);
+        }
+
+
+
+
+        function updatePosition() {
+            player.style.left = `${positionX}px`;
+            player.style.bottom = '0px';
+        }
+
+        function checkCollisions() {
+            bubbles.forEach((bubble) => {
+                if (elementsOverlap(player, bubble)) {
+                    const playerRect = player.getBoundingClientRect();
+                    const ballRect = bubble.getBoundingClientRect();
+
+                    // מצא את הצד הקרוב ביותר לפגיעה
+                    const overlapLeft = ballRect.right - playerRect.left;
+                    const overlapRight = playerRect.right - ballRect.left;
+                    const overlapTop = ballRect.bottom - playerRect.top;
+                    const overlapBottom = playerRect.bottom - ballRect.top;
+
+                    const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+
+                    if (minOverlap === overlapLeft) {
+                        posX = playerRect.left;
+                        ballRect.width; // העבר את הכדור לשמאל
+                    } else if (minOverlap === overlapRight) {
+                        posX = playerRect.left; // העבר את הכדור לימין
+                    } else if (minOverlap === overlapTop) {
+                        posY = playerRect.top - ballRect.height; // העבר את הכדור למעלה
+                    } else if (minOverlap === overlapBottom) {
+                        posY = playerRect.bottom; // העבר את הכדור למטה
+                    }
+
+                    endGame();
+                }
+            });
+        }
+
+        addEventListener("keydown", checkKey);
+
+        function checkKey(info) {
+            const playerWidth = 120;
+            const containerWidth = window.innerWidth;
+
+            if (info.key === "d" || info.key === "D") {
+                if (positionX + playerWidth < containerWidth) {
+                    positionX += 15;
+                }
+            } else if (info.key === "a" || info.key === "A") {
+                if (positionX > 0) {
+                    positionX -= 15;
+                }
+            }
+
+            updatePosition();
+        }
+
+        function elementsOverlap(player, bubble) {
+            const domRect1 = player.getBoundingClientRect();
+            const domRect2 = bubble.getBoundingClientRect();
+
+            return !(
+                domRect1.top > domRect2.bottom ||
+                domRect1.right < domRect2.left ||
+                domRect1.bottom < domRect2.top ||
+                domRect1.left > domRect2.right
+            );
+        }
+
+        function addSomeBubble() {
+            for (let index = 0; index < 25; index++) {
+                showBubble();
+            }
+        }
+
+        function Next() {
+            window.location = "level5.html"
+        }
+
+        function endGame() {
+            player.remove();
+            document.body.innerHTML = `
+                <div id="endDiv">
+                <p id="over">The game is over</p>
+                <div class="btnOver" onclick="Next()">
+                    <br>
+                    Next
+                    <br>
+                    <div>
+                </div>
+            `;
+
+
+            clearInterval(TimeInterval); // עצור את הטיימר
+        }
+
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        addSomeBubble();
+        setInterval(addSomeBubble, 7000);
+
+        // בדיקת חפיפות כל 500 מילישניות
+        let collisionInterval = setInterval(checkCollisions, 500);
+    </script>
+</body>
+
+</html>
+
+</html>

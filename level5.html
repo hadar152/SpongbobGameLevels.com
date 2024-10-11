@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrabMoneyGame level5</title>
+    <link rel="stylesheet" href="level5.css">
+</head>
+
+<body>
+    <h1>Your Krab Money score:<span id="score">0</span></h1>
+    <h1>Time:<b id="time">0</b></h1>
+    <div id="player"></div>
+    <div id="container"></div>
+    <script>
+        let container = document.getElementById('container');
+        let timeElement = document.getElementById('time');
+        let timeLeft = 60;
+        let player = document.getElementById('player');
+        let scoreElement = document.getElementById('score');
+        let score = 0;
+        let bubbles = []; // רשימה לשמירת הבועות
+        let positionX = 100; // מיקום X של השחקן
+        let TimeInterval = setInterval(timer, 300);
+        let MoneySound = new Audio("Money.wav");
+        let MoneyBagExists = false;
+        let MoneyBag; // הגדרת הקציצה כמשתנה גלובלי
+        let dolares = []; // הגדרת רשימת הבועות
+
+
+        function showMoney() {
+            const dolar = document.createElement('img');
+            dolar.className = 'Money';
+            dolar.src = 'dolar.png';
+            dolar.style.left = `${getRandom(0, 95)}%`;
+            dolar.style.top = `${getRandom(0, 95)}%`;
+            container.appendChild(dolar);
+            dolares.push(dolar); // הוספת הבועה לרשימה
+        }
+
+        function giantCrabPattySlice() {
+            if (!MoneyBagExists) { // בדוק אם הקציצה כבר קיימת
+                MoneyBag = document.createElement('img');
+                MoneyBag.className = 'MoneyBag';
+                MoneyBag.src = 'MoneyBag.png'; // תחליף עם הקישור לקציצה הגדולה
+                MoneyBag.width = "360px";
+
+                // מיקום הקציצה במרכז המסך
+                MoneyBag.style.position = 'absolute';
+                MoneyBag.style.left = `${getRandom(0, 95)}%`;
+                MoneyBag.style.top = `${getRandom(0, 95)}%`;
+                container.appendChild(MoneyBag);
+                MoneyBagExists = true; // עדכון המצב לקציצה קיימת
+                console.log("קציצה ענקית נאספה!");
+            }
+        }
+
+        function checkOverLapGiantPatty() {
+            if (MoneyBagExists && elementsOverlap(player, MoneyBag)) {
+                score += 25;
+                scoreElement.innerHTML = score;
+                MoneyBag.remove(); // הסר את הקציצה
+                MoneyBagExists = false; // עדכן שהקציצה לא קיימת יותר
+                MoneySound.play();
+            }
+        }
+
+        function Next() {
+            window.location = "level1.html"
+        }
+
+
+        function timer() {
+            timeLeft--;
+            timeElement.innerHTML = "" + timeLeft;
+            if (timeLeft === 0 && score < 50) {
+                player.remove()
+                MoneySound = new Audio("")
+                document.body.innerHTML = `
+                <div id="endDiv">
+                <p id="over">The game is over</p>
+                <p id="endScore">Your Score:${score}</p>
+                <div class="btnOver" onclick="Next()">
+                    <br>
+                     Restart
+                     <br>
+                    </div>
+                </div>
+                `
+            } else if (score > 50 && timeLeft === 0) {
+                player.remove()
+                MoneySound = new Audio("")
+                document.body.innerHTML = `
+                <div id="endDiv">
+                <p id="overGood">The game is over</p>
+                <p id="endScore">Your Score:${score}!</p>
+                 <div class="btnOver" onclick="Next()">
+                    <br>
+                    Restart
+                    <br>
+                    </div>
+                </div>
+                `
+            }
+        }
+
+
+        function updatePosition() {
+            player.style.left = `${positionX}px`;
+            player.style.bottom = '0px'; // שומר על השחקן בתחתית
+        }
+
+        function check() {
+            dolares.forEach((dolar) => {
+                // בדוק אם הבועה נוגעת ברצפה
+                const domRect = dolar.getBoundingClientRect();
+                if (domRect.bottom >= window.innerHeight) {
+                    // אם הבועה נוגעת ברצפה, הסר אותה
+                    dolar.remove();
+                    dolares = dolares.filter(b => b !== dolar);
+                    return; // לצאת מהלולאה
+                }
+
+                // בדוק חפיפה עם השחקן
+                if (elementsOverlap(player, dolar)) {
+                    score++;
+                    scoreElement.innerHTML = score;
+                    dolar.remove();
+                    MoneySound.play();
+                    dolares = dolares.filter(b => b !== dolar);
+                }
+            });
+        }
+
+        addEventListener("keydown", checkKey);
+
+        function checkKey(info) {
+            const playerWidth = 120; // רוחב השחקן
+            const containerWidth = window.innerWidth; // רוחב המסך
+            if (info.key === "d" || info.key === "D") {
+                // זוז ימינה, בדוק אם זה לא יוצא מהמסך
+                if (positionX + playerWidth < containerWidth) {
+                    positionX += 15;
+                }
+            } else if (info.key === "a" || info.key === "A") {
+                // זוז שמאלה, בדוק אם זה לא יוצא מהמסך
+                if (positionX > 0) {
+                    positionX -= 15;
+                }
+            }
+
+            updatePosition();
+            checkOverLapGiantPatty();
+            check(); // בדוק חפיפה לאחר העדכון
+        }
+
+        function elementsOverlap(player, dolar) {
+            const domRect1 = player.getBoundingClientRect(); // גבולות השחקן
+            const domRect2 = dolar.getBoundingClientRect(); // גבולות הבועה
+
+            return !(
+                domRect1.top > domRect2.bottom ||
+                domRect1.right < domRect2.left ||
+                domRect1.bottom < domRect2.top ||
+                domRect1.left > domRect2.right
+            );
+        }
+
+        function addSomeMoney() {
+            for (let index = 0; index < 30; index++) { // הוספת 5 בועות בכל פעם
+                showMoney();
+            }
+        }
+
+        function getRandom(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        addSomeMoney();
+        setInterval(addSomeMoney, 7000);
+        setInterval(giantCrabPattySlice, 6000); // יצירת קציצה כל 3 שניות
+        setInterval(checkOverLapGiantPatty, 100); // בדוק חפיפה עם הקציצה כל 100 מילישניות
+        setInterval(check, 500);
+    </script>
+</body>
+
+</html>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BulbleGame</title>
+    <link rel="stylesheet" href="level2.css">
+</head>
+
+<body>
+    <div id="Main">
+        <b id="LableTime">Time:</b><b id="time">0</b></b>
+        <br>
+        <b id="LableScore">Score:</b><b id="score">0</b>
+        <br>
+        <b id="LableBest">your Best Score:</b><b id="BestTXTR"></b>
+    </div>
+    <br><br><br><br><br><br>
+    <div id="player"><img width="180px" id="spongebobImg" src="spongebob.png" alt=" "></div>
+    <div id="enemy"><img width="180px" id="enemyimg" src="bubbles.png" alt=" "></div>
+
+    <script>
+        let best = localStorage.getItem("best")
+        let bestTime = localStorage.getItem("bestTime")
+        let playerImg = document.getElementById("spongebobImg");
+        let Main = document.getElementById("Main");
+        let enemyImg = document.getElementById("enemyimg");
+        let time = document.getElementById("time");
+        let floor = document.getElementById("floor");
+        let Bestlable = document.getElementById("LableBest");
+        let BestTXTR = document.getElementById("BestTXTR");
+        let timeElement = 0;
+        let score = 0;
+        let scoreId = document.getElementById("score");
+        let player = document.getElementById("player");
+        let enemy = document.getElementById("enemy");
+        let isJumping = false;
+        let isDown = false;
+        BestTXTR.innerHTML = best
+        addEventListener("keydown", checkKey);
+
+        function windowLocation() {
+            window.location = "level3.html"
+        }
+
+        function checkKey(info) {
+            if (info.key === " " || info.key === "ArrowUp") {
+                jump();
+            }
+        }
+
+        function jump() {
+            if (isJumping) return; // תצא מהפונקציה ואל תעשה כלום
+
+            isJumping = true;
+            player.classList.add("jump");
+            score++;
+            scoreId.innerHTML = score;
+
+            setTimeout(removeAnimation, 1000);
+        }
+
+        function removeAnimation() {
+            player.classList.remove('jump'); // הסר את מחלקת הקפיצה
+            isJumping = false; // עדכן את מצב הקפיצה
+            score++; // עדכן את הניקוד
+            scoreId.innerHTML = score; // עדכן את תצוגת הניקוד
+        }
+
+        function elementsOverlap(player, enemy) {
+            const rect1 = player.getBoundingClientRect();
+            const rect2 = enemy.getBoundingClientRect();
+
+            const xOverlap = rect1.right > rect2.left && rect1.left < rect2.right;
+            const yOverlap = rect1.bottom > rect2.top && rect1.top < rect2.bottom;
+
+            return xOverlap && yOverlap; // פשוט לבדוק אם יש חפיפה
+        }
+
+        function check() {
+            if (elementsOverlap(player, enemy)) {
+                clearInterval(checkInterval)
+                let best = localStorage.getItem("best")
+                if (!best || best < score) {
+                    localStorage.setItem('best', score)
+                    best = score
+                }
+                document.body.innerHTML = `
+                 <p id="overId">Game over !</p>
+                 <p id="result">your score is:${score}!</p> 
+                <p id="best"> your best score is:${best}</p> 
+                    <div class="btnOver" onclick="windowLocation()">
+                    <br>
+                    Next
+                    <br>
+                    </div>
+        `
+            }
+        }
+
+
+
+
+        function timer() {
+            timeElement++;
+            time.innerHTML = timeElement;
+        }
+
+        let gameInterval = setInterval(timer, 100);
+        let checkInterval = setInterval(check, 100);
+    </script>
+</body>
+
+</html>

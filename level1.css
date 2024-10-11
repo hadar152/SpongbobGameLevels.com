@@ -1,0 +1,73 @@
+#score {
+    font-family: cursive;
+}
+
+h1 {
+    font-family: cursive;
+}
+
+#endScore {
+    font-family: cursive;
+}
+
+#over {
+    font-family: cursive;
+    color: rgb(255, 0, 0);
+}
+
+#overGood {
+    font-family: cursive;
+    color: rgb(69, 189, 0);
+}
+
+.btnOver {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: url("bubbles.png");
+    background-size: 50px;
+    height: 50px;
+    text-align: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#endDiv {
+    text-align: center;
+    margin: auto;
+}
+
+.bubble {
+    width: 70px;
+    position: absolute;
+    user-select: none;
+    animation-name: goUp;
+    animation-duration: 19s;
+    animation-fill-mode: forwards;
+}
+
+#player {
+    background-image: url("spongebob.png");
+    background-size: 180px;
+    width: 180px;
+    height: 170px;
+    position: absolute;
+    bottom: 0;
+}
+
+@keyframes goUp {
+    0% {
+        transform: translateY(-600px);
+    }
+    100% {
+        transform: translateY(1500px);
+    }
+}
+
+body {
+    overflow: hidden;
+    background-color: rgb(127, 219, 255);
+}
